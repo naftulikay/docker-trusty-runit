@@ -3,6 +3,7 @@
 .vagrant
 
 ansible
+tests
 
 LICENSE
 README.md
