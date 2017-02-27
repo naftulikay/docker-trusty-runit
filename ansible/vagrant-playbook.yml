@@ -1,0 +1,37 @@
+---
+ - hosts: all
+   become: true
+   tasks:
+     - name: install kernel extra packages
+       package: name={{ item }} state=present
+       with_items:
+         - "linux-image-extra-{{ ansible_kernel }}"
+         - "linux-image-extra-virtual"
+
+     - name: install apt extensions
+       package: name={{ item }} state=present
+       with_items:
+         - apt-transport-https
+         - ca-certificates
+         - curl
+         - software-properties-common
+
+     - name: install the apt key
+       apt_key:
+         id: 58118E89F3A912897C070ADBF76221572C52609D
+         url: https://apt.dockerproject.org/gpg
+         keyring: /etc/apt/trusted.gpg.d/docker.gpg
+
+     - name: install the repository
+       apt_repository:
+         repo: deb https://apt.dockerproject.org/repo/ ubuntu-{{ ansible_distribution_release }} main
+         state: present
+         filename: docker
+
+     - name: install docker
+       package: name=docker-engine state=present
+
+     - name: enable and start docker
+       service: name=docker state=started enabled=yes
+
+   roles: []
