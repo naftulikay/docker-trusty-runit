@@ -5,3 +5,5 @@ ADD scripts/build.sh /build
 RUN /build
 
 ADD scripts/setuser.py /usr/sbin/setuser
+
+ENTRYPOINT ["/usr/bin/runsvdir", "-P", "/etc/service"]

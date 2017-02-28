@@ -12,6 +12,11 @@ function install-packages() {
   apt-get install -y ${packages} >/dev/null
 }
 
+function configure-runit() {
+  log "configuring runit..."
+  test -d /etc/service || mkdir -p /etc/service
+}
+
 function clean() {
   log "cleaning up..."
   apt-get clean >/dev/null
@@ -21,6 +26,7 @@ function clean() {
 
 function main() {
   install-packages
+  configure-runit
   clean
 }
 
